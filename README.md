@@ -42,5 +42,5 @@ Using a simple api, control lights or any other Arduino digital port with this a
 ## Demo GIF
 
 ![App Screenshot](https://link.storjshare.io/s/jxan5bf56rg7jwklmc2kaqiaoqsq/projetos/arduinolightcontrolweb/demonstra%C3%A7%C3%A3o%20.gif?wrap=0)
-[Link](https://link.storjshare.io/s/jxan5bf56rg7jwklmc2kaqiaoqsq/projetos/arduinolightcontrolweb/demonstra%C3%A7%C3%A3o%20.gif)
+[GIF Vew](https://link.storjshare.io/s/jxan5bf56rg7jwklmc2kaqiaoqsq/projetos/arduinolightcontrolweb/demonstra%C3%A7%C3%A3o%20.gif)
 
