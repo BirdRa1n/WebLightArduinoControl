@@ -20,7 +20,7 @@ export default function App() {
       <Stack.Navigator>
         <Stack.Screen name="Sign in" component={SignIN} options={{headerShown:false}}/>
         <Stack.Screen name="Dashboard" component={Dashboard} options={{headerShown:false}}/>
-        <Stack.Screen name="SpinnerScreen" component={SpinnerScreen} options={{headerShown:false}}/>
+        <Stack.Screen name="SpinnerScreen" component={SpinnerScreen} options={{headerShown:false, title:'Loading...'}} />
       </Stack.Navigator>
     </NavigationContainer>
     </NativeBaseProvider>
