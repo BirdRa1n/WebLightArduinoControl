@@ -39,9 +39,8 @@ export default function Dashboard({ navigation }) {
   const { value, onCopy } = useClipboard();
   const [Data, setData] = React.useState({});
   const [Raw, setRaw] = React.useState("");
-  const [api_arduino, setapi_arduino] = React.useState(
-    "https://birdra1n.x10.bz/WebLightcontrolArduino/signin/set_lights"
-  );
+
+  const [DataSw, setDataSw] = React.useState({});
 
   function getRaw() {
     axios
@@ -52,7 +51,11 @@ export default function Dashboard({ navigation }) {
         setRaw(response.data);
       });
   }
-
+  const [api_arduino, setapi_arduino] = React.useState(
+    "https://birdra1n.x10.bz/WebLightcontrolArduino/get_lights/?arduinoid=" +
+      DataSw.arduino_id +
+      "&type_req=arduino"
+  );
   const Profile = () => {
     return (
       <Box w={"100%"} h={65} shadow={1} justifyContent={"space-between"}>
@@ -110,7 +113,34 @@ export default function Dashboard({ navigation }) {
       Switch_15: false,
     });
 
-    const getStoreSwitchs = () => {};
+    const getStateDataSwitchsforCloud = () => {
+      axios
+        .get("https://birdra1n.x10.bz/WebLightcontrolArduino/get_lights/", {
+          params: {
+            type_req: "app",
+            arduinoid: DataSw.arduino_id,
+          },
+        })
+        .then(function (response) {
+          setData(response.data);
+          console.log(response.data);
+        });
+    };
+
+    const SetServerStoreSwitchs = () => {
+      axios
+        .get("https://birdra1n.x10.bz/WebLightcontrolArduino/set_lights/", {
+          params: {
+            token_season: DataSw.token,
+            arduinoid: DataSw.arduino_id,
+            DataSwitchs: JSON.stringify(Data),
+          },
+        })
+        .then(function (response) {
+          console.log("#########");
+          console.log(response.data);
+        });
+    };
 
     const storeSwitchs = async (value) => {
       try {
@@ -119,6 +149,17 @@ export default function Dashboard({ navigation }) {
       } catch (e) {}
     };
 
+    const getLocalStoreSwitchs = async () => {
+      try {
+        const jsonValue = await AsyncStorage.getItem("@Switchs");
+        return jsonValue != null ? setData(JSON.parse(jsonValue)) : null;
+      } catch (e) {}
+    };
+    useEffect(() => {
+      getLocalStoreSwitchs();
+      getStateDataSwitchsforCloud();
+    }, []);
+
     return (
       <Actionsheet isOpen={isOpen} onClose={onClose}>
         <Center bottom={1}>
@@ -126,7 +167,10 @@ export default function Dashboard({ navigation }) {
             rightIcon={<AntDesign name="save" size={24} color="#F0F0F0" />}
             colorScheme={"warning"}
             _text={{ color: "light.50" }}
-            onPress={()=>{storeSwitchs(Data)}}
+            onPress={() => {
+              storeSwitchs(Data);
+              SetServerStoreSwitchs();
+            }}
           >
             Save light
           </Button>
@@ -366,6 +410,13 @@ export default function Dashboard({ navigation }) {
       const arduino_id = await AsyncStorage.getItem("@arduino_id");
       if (token !== null) {
         setData({
+          ...Data,
+          token: token,
+          name: name,
+          email: email,
+          arduino_id: arduino_id,
+        });
+        setDataSw({
           ...Data,
           token: token,
           name: name,

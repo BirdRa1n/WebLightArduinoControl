@@ -27,7 +27,7 @@ export default function SpinnerScreen({ route, navigation }) {
     const { direction } = route.params;
     setTimeout(() => {
         navigation.navigate(direction)
-    }, 10000);
+    }, 1000);
 
     return (
         <Box safeArea w={'100%'} h={'100%'} flex={1} justifyContent={'center'}>
